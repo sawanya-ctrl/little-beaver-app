@@ -17,53 +17,60 @@
     background: #FFFFFF;
     border-radius: 16px;
     padding: 28px;
-    max-width: 560px;
+    max-width: 680px;
     width: 100%;
     box-shadow: 0 1px 3px rgba(0,0,0,0.08);
   }
-  h1 {
-    font-size: 20px;
-    font-weight: 600;
-    color: #2F4A3C;
-    margin: 0 0 20px;
-  }
-  label {
-    font-size: 13px;
-    color: #6B6459;
-    display: block;
-    margin: 14px 0 6px;
-  }
+  h1 { font-size: 20px; font-weight: 600; color: #2F4A3C; margin: 0 0 20px; }
+  h2 { font-size: 15px; font-weight: 600; color: #2F4A3C; margin: 0 0 4px; }
+  label { font-size: 13px; color: #6B6459; display: block; margin: 14px 0 6px; }
   select, input, textarea {
-    width: 100%;
-    padding: 10px 12px;
-    border-radius: 8px;
-    border: 1px solid #E4DFD3;
-    font-size: 14px;
-    box-sizing: border-box;
-    font-family: inherit;
+    width: 100%; padding: 10px 12px; border-radius: 8px;
+    border: 1px solid #E4DFD3; font-size: 14px; box-sizing: border-box; font-family: inherit;
   }
   textarea { resize: vertical; }
   .row { display: flex; gap: 8px; align-items: center; margin: 4px 0; }
   .row > * { flex: 1; }
   button {
-    border-radius: 8px;
-    padding: 10px 16px;
-    font-size: 14px;
-    cursor: pointer;
-    font-family: inherit;
+    border-radius: 8px; padding: 10px 16px; font-size: 14px; cursor: pointer; font-family: inherit;
   }
   .btn-primary { background: #2F4A3C; color: #fff; border: none; width: 100%; margin-top: 12px; }
+  .btn-secondary { background: #C9762E; color: #fff; border: none; width: 100%; margin-top: 8px; }
   .btn-ghost { background: transparent; color: #2F4A3C; border: 1px solid #2F4A3C; }
   .muted { font-size: 13px; color: #6B6459; margin: 14px 0; }
   .error { font-size: 13px; color: #B3261E; margin: 8px 0; }
   .success { font-size: 14px; color: #2F4A3C; margin: 14px 0; }
-  .variant-card {
-    border: 1px solid #E4DFD3;
-    border-radius: 10px;
-    padding: 10px;
-    margin-bottom: 8px;
+  .age-block {
+    border: 1px solid #E4DFD3; border-radius: 12px; padding: 14px; margin-bottom: 14px;
   }
-  .variant-card textarea, .variant-card input { margin-bottom: 8px; }
+  .age-tag {
+    display: inline-block; font-size: 12px; font-weight: 600; background: #EFEAE0;
+    color: #2F4A3C; padding: 3px 10px; border-radius: 6px; margin-bottom: 10px;
+  }
+  .step-row {
+    display: flex; gap: 10px; align-items: flex-start; padding: 8px 0;
+    border-top: 1px solid #F0ECE2;
+  }
+  .step-row:first-of-type { border-top: none; }
+  .step-num { font-size: 13px; color: #9C9384; width: 20px; flex: none; padding-top: 6px; }
+  .step-time { font-size: 12px; color: #9C9384; width: 90px; flex: none; padding-top: 6px; }
+  .step-main { flex: 1; }
+  .step-activity { font-size: 14px; color: #2F2A22; margin-bottom: 6px; }
+  .toggle-group { display: flex; gap: 6px; margin-bottom: 6px; }
+  .toggle-btn {
+    font-size: 12px; padding: 5px 10px; border-radius: 6px; border: 1px solid #E4DFD3;
+    background: #fff; color: #6B6459; cursor: pointer;
+  }
+  .toggle-btn.active-followed { background: #E7F0E9; border-color: #2F4A3C; color: #2F4A3C; }
+  .toggle-btn.active-adapted { background: #FCEFE2; border-color: #C9762E; color: #C9762E; }
+  .replacement-input { display: none; }
+  .replacement-input.show { display: block; }
+  .output-block {
+    border: 1px solid #E4DFD3; border-radius: 10px; padding: 12px; margin-bottom: 10px; background: #FBF9F5;
+  }
+  .output-block ul { margin: 6px 0 0; padding-left: 18px; font-size: 13px; }
+  .output-block p { font-size: 13px; margin: 6px 0 0; }
+  .copy-btn { font-size: 12px; margin-top: 8px; padding: 6px 10px; }
   .hidden { display: none; }
 </style>
 </head>
@@ -72,7 +79,6 @@
 <div class="card">
   <h1>Curriculum parser</h1>
 
-  <!-- TODO: replace with your deployed Apps Script Web App URL -->
   <script>
     const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwXh728vhh56Md1gQSofPw__G2yK5a_TlX81lbiy2-rKs0EtFURJiyPQ0HlWnpW5mQ9kA/exec';
   </script>
@@ -93,15 +99,15 @@
   <p id="error-box" class="error hidden"></p>
 
   <div id="stage-paste">
-    <label for="raw-text">วางเนื้อหา lesson plan</label>
-    <textarea id="raw-text" rows="8" placeholder="วางเนื้อหาที่คัดลอกมาจาก Word หรือ Google Doc ตรงนี้"></textarea>
+    <label for="raw-text">วางเนื้อหา lesson plan ทั้งหมด</label>
+    <textarea id="raw-text" rows="10" placeholder="วางเนื้อหาที่คัดลอกมาจาก Word หรือ Google Doc ตรงนี้ ยิ่งใส่รายละเอียดกิจกรรม/เวลาครบเท่าไหร่ ผลลัพธ์ยิ่งละเอียดเท่านั้น"></textarea>
     <button class="btn-primary" id="parse-btn">Parse with AI</button>
   </div>
 
   <p id="stage-loading" class="muted hidden">กำลังจัดโครงสร้างข้อมูล...</p>
 
   <div id="stage-preview" class="hidden">
-    <p class="muted">ตรวจสอบและแก้ไขก่อนบันทึก</p>
+    <p class="muted">ตรวจสอบชื่อ session แล้วทำเครื่องหมายว่าแต่ละขั้นสอนตามแผนหรือปรับเปลี่ยน</p>
 
     <label>Session title</label>
     <input id="p-title" />
@@ -109,24 +115,28 @@
     <label>Big idea</label>
     <input id="p-bigidea" />
 
-    <label>Thread note</label>
-    <input id="p-threadnote" placeholder="ความเชื่อมโยงกับ session ก่อน/หลัง (ถ้ามี)" />
-
-    <label>Age variants</label>
-    <div id="variants-container"></div>
-    <button class="btn-ghost" id="add-variant-btn">+ เพิ่ม age variant ที่ตกหล่น</button>
+    <div id="age-blocks-container"></div>
 
     <div class="row">
       <button class="btn-ghost" id="start-over-btn">แก้ข้อความเดิม</button>
-      <button class="btn-primary" id="save-btn" style="margin-top: 0;">บันทึกเข้าหลักสูตร</button>
+      <button class="btn-ghost" id="save-curriculum-btn">บันทึกเข้าหลักสูตร</button>
     </div>
+    <button class="btn-secondary" id="generate-btn">สร้าง Assessment + Parent Message</button>
   </div>
 
   <p id="stage-saving" class="muted hidden">กำลังบันทึก...</p>
+  <p id="save-confirm" class="success hidden">บันทึกเข้า Sessions และ SessionAgeVariants แล้ว</p>
 
-  <div id="stage-done" class="hidden">
-    <p class="success">บันทึกเข้า Sessions และ SessionAgeVariants แล้ว</p>
-    <button class="btn-primary" id="parse-next-btn">Parse session ถัดไป</button>
+  <p id="stage-generating" class="muted hidden">กำลังสร้าง Assessment และ Parent Message จากสิ่งที่สอนจริง...</p>
+
+  <div id="stage-results" class="hidden">
+    <h2>Assessment</h2>
+    <div id="assessment-results"></div>
+
+    <h2 style="margin-top: 18px;">Parent message</h2>
+    <div id="parent-results"></div>
+
+    <button class="btn-primary" id="restart-btn">Parse session ถัดไป</button>
   </div>
 </div>
 
@@ -148,15 +158,18 @@ function showError(msg) {
   box.textContent = msg;
   box.classList.remove('hidden');
 }
-
 function clearError() {
   document.getElementById('error-box').classList.add('hidden');
 }
 
-function showStage(name) {
-  ['paste', 'loading', 'preview', 'saving', 'done'].forEach((s) => {
-    document.getElementById('stage-' + s).classList.toggle('hidden', s !== name);
+function showStage(names) {
+  const all = ['paste', 'loading', 'preview', 'saving', 'generating', 'results'];
+  all.forEach((s) => {
+    document.getElementById('stage-' + s).classList.toggle('hidden', names.indexOf(s) === -1);
   });
+  if (names.indexOf('preview') === -1) {
+    document.getElementById('save-confirm').classList.add('hidden');
+  }
 }
 
 async function loadUnits() {
@@ -201,57 +214,20 @@ document.getElementById('parse-btn').addEventListener('click', async () => {
   if (!unitId) { showError('เลือก unit ก่อนค่อย parse'); return; }
   if (!rawText) { showError('วางเนื้อหา lesson plan ก่อนถึงจะ parse ได้'); return; }
 
-  showStage('loading');
+  showStage(['loading']);
   try {
     const data = await callApi('parseLessonPlan', { rawText });
+    data.ageVariants.forEach((v) => {
+      (v.activitySteps || []).forEach((s) => { s.status = 'followed'; s.replacement = ''; });
+    });
     currentPreview = data;
     renderPreview();
-    showStage('preview');
+    showStage(['preview']);
   } catch (e) {
     showError(e.message);
-    showStage('paste');
+    showStage(['paste']);
   }
 });
-
-function renderPreview() {
-  document.getElementById('p-title').value = currentPreview.sessionTitle || '';
-  document.getElementById('p-bigidea').value = currentPreview.bigIdea || '';
-  document.getElementById('p-threadnote').value = currentPreview.threadNote || '';
-  renderVariants();
-}
-
-function renderVariants() {
-  const container = document.getElementById('variants-container');
-  container.innerHTML = '';
-  currentPreview.ageVariants.forEach((v, i) => {
-    const div = document.createElement('div');
-    div.className = 'variant-card';
-    div.innerHTML =
-      '<div class="row">' +
-        '<input data-field="ageGroup" data-index="' + i + '" value="' + escapeHtml(v.ageGroup) + '" placeholder="ช่วงอายุ" style="flex: 0 0 140px;" />' +
-        '<button class="btn-ghost remove-variant" data-index="' + i + '" style="flex: 0 0 auto;">ลบ</button>' +
-      '</div>' +
-      '<textarea data-field="objectives" data-index="' + i + '" rows="2" placeholder="Objectives">' + escapeHtml(v.objectives) + '</textarea>' +
-      '<input data-field="materials" data-index="' + i + '" value="' + escapeHtml(v.materials) + '" placeholder="Materials" />';
-    container.appendChild(div);
-  });
-
-  container.querySelectorAll('[data-field]').forEach((el) => {
-    el.addEventListener('input', (e) => {
-      const idx = parseInt(e.target.getAttribute('data-index'), 10);
-      const field = e.target.getAttribute('data-field');
-      currentPreview.ageVariants[idx][field] = e.target.value;
-    });
-  });
-
-  container.querySelectorAll('.remove-variant').forEach((btn) => {
-    btn.addEventListener('click', (e) => {
-      const idx = parseInt(e.target.getAttribute('data-index'), 10);
-      currentPreview.ageVariants.splice(idx, 1);
-      renderVariants();
-    });
-  });
-}
 
 function escapeHtml(str) {
   const div = document.createElement('div');
@@ -259,42 +235,136 @@ function escapeHtml(str) {
   return div.innerHTML;
 }
 
-document.getElementById('add-variant-btn').addEventListener('click', () => {
-  currentPreview.ageVariants.push({ ageGroup: '', objectives: '', materials: '', standards: '' });
-  renderVariants();
-});
+function renderPreview() {
+  document.getElementById('p-title').value = currentPreview.sessionTitle || '';
+  document.getElementById('p-bigidea').value = currentPreview.bigIdea || '';
+  renderAgeBlocks();
+}
+
+function renderAgeBlocks() {
+  const container = document.getElementById('age-blocks-container');
+  container.innerHTML = '';
+  currentPreview.ageVariants.forEach((variant, vi) => {
+    const block = document.createElement('div');
+    block.className = 'age-block';
+    let html = '<span class="age-tag">' + escapeHtml(variant.ageGroup) + '</span>';
+    if (!variant.activitySteps || variant.activitySteps.length === 0) {
+      html += '<p class="muted" style="margin:4px 0;">ไม่พบขั้นกิจกรรมแยกในต้นฉบับสำหรับกลุ่มนี้</p>';
+    }
+    (variant.activitySteps || []).forEach((step, si) => {
+      const followedActive = step.status === 'followed' ? 'active-followed' : '';
+      const adaptedActive = step.status === 'adapted' ? 'active-adapted' : '';
+      const showReplacement = step.status === 'adapted' ? 'show' : '';
+      html +=
+        '<div class="step-row">' +
+          '<div class="step-num">' + (si + 1) + '.</div>' +
+          '<div class="step-time">' + escapeHtml(step.time || '-') + '</div>' +
+          '<div class="step-main">' +
+            '<div class="step-activity">' + escapeHtml(step.activity) + '</div>' +
+            '<div class="toggle-group">' +
+              '<button type="button" class="toggle-btn ' + followedActive + '" data-vi="' + vi + '" data-si="' + si + '" data-status="followed">✓ ทำตามแผน</button>' +
+              '<button type="button" class="toggle-btn ' + adaptedActive + '" data-vi="' + vi + '" data-si="' + si + '" data-status="adapted">✗ ปรับเปลี่ยน</button>' +
+            '</div>' +
+            '<input type="text" class="replacement-input ' + showReplacement + '" data-vi="' + vi + '" data-si="' + si + '" placeholder="สอนจริงทำอะไรแทน" value="' + escapeHtml(step.replacement) + '" />' +
+          '</div>' +
+        '</div>';
+    });
+    block.innerHTML = html;
+    container.appendChild(block);
+  });
+
+  container.querySelectorAll('.toggle-btn').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      const vi = parseInt(e.target.getAttribute('data-vi'), 10);
+      const si = parseInt(e.target.getAttribute('data-si'), 10);
+      const status = e.target.getAttribute('data-status');
+      currentPreview.ageVariants[vi].activitySteps[si].status = status;
+      renderAgeBlocks();
+    });
+  });
+
+  container.querySelectorAll('.replacement-input').forEach((input) => {
+    input.addEventListener('input', (e) => {
+      const vi = parseInt(e.target.getAttribute('data-vi'), 10);
+      const si = parseInt(e.target.getAttribute('data-si'), 10);
+      currentPreview.ageVariants[vi].activitySteps[si].replacement = e.target.value;
+    });
+  });
+}
 
 document.getElementById('p-title').addEventListener('input', (e) => { currentPreview.sessionTitle = e.target.value; });
 document.getElementById('p-bigidea').addEventListener('input', (e) => { currentPreview.bigIdea = e.target.value; });
-document.getElementById('p-threadnote').addEventListener('input', (e) => { currentPreview.threadNote = e.target.value; });
 
 document.getElementById('start-over-btn').addEventListener('click', () => {
   currentPreview = null;
   document.getElementById('raw-text').value = '';
   clearError();
-  showStage('paste');
+  showStage(['paste']);
 });
 
-document.getElementById('save-btn').addEventListener('click', async () => {
+document.getElementById('save-curriculum-btn').addEventListener('click', async () => {
   clearError();
   const unitId = document.getElementById('unit-select').value;
   if (!currentPreview.sessionTitle.trim()) { showError('ใส่ชื่อ session ก่อนบันทึก'); return; }
-
-  showStage('saving');
   try {
     await callApi('saveParsedSession', { unitId, parsed: currentPreview });
-    showStage('done');
+    document.getElementById('save-confirm').classList.remove('hidden');
   } catch (e) {
     showError(e.message);
-    showStage('preview');
   }
 });
 
-document.getElementById('parse-next-btn').addEventListener('click', () => {
+document.getElementById('generate-btn').addEventListener('click', async () => {
+  clearError();
+  showStage(['generating']);
+  try {
+    const data = await callApi('generateOutputs', { sessionData: currentPreview });
+    renderResults(data);
+    showStage(['results']);
+  } catch (e) {
+    showError(e.message);
+    showStage(['preview']);
+  }
+});
+
+function renderResults(data) {
+  const aBox = document.getElementById('assessment-results');
+  aBox.innerHTML = '';
+  data.assessments.forEach((a) => {
+    const div = document.createElement('div');
+    div.className = 'output-block';
+    let html = '<span class="age-tag">' + escapeHtml(a.ageGroup) + '</span><ul>';
+    a.criteria.forEach((c) => { html += '<li>' + escapeHtml(c) + '</li>'; });
+    html += '</ul>';
+    div.innerHTML = html;
+    aBox.appendChild(div);
+  });
+
+  const pBox = document.getElementById('parent-results');
+  pBox.innerHTML = '';
+  data.parentMessages.forEach((pm) => {
+    const div = document.createElement('div');
+    div.className = 'output-block';
+    div.innerHTML =
+      '<span class="age-tag">' + escapeHtml(pm.ageGroup) + '</span>' +
+      '<p>' + escapeHtml(pm.message) + '</p>' +
+      '<button type="button" class="btn-ghost copy-btn" data-text="' + escapeHtml(pm.message) + '">คัดลอกข้อความ</button>';
+    pBox.appendChild(div);
+  });
+
+  pBox.querySelectorAll('.copy-btn').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      const text = e.target.getAttribute('data-text');
+      window.prompt('คัดลอกข้อความนี้ (Ctrl+A แล้ว Ctrl+C):', text);
+    });
+  });
+}
+
+document.getElementById('restart-btn').addEventListener('click', () => {
   currentPreview = null;
   document.getElementById('raw-text').value = '';
   clearError();
-  showStage('paste');
+  showStage(['paste']);
 });
 
 loadUnits();
