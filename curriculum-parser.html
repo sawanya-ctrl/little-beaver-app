@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -17,7 +17,7 @@
     background: #FFFFFF;
     border-radius: 16px;
     padding: 28px;
-    max-width: 680px;
+    max-width: 700px;
     width: 100%;
     box-shadow: 0 1px 3px rgba(0,0,0,0.08);
   }
@@ -36,21 +36,36 @@
   }
   .btn-primary { background: #2F4A3C; color: #fff; border: none; width: 100%; margin-top: 12px; }
   .btn-secondary { background: #C9762E; color: #fff; border: none; width: 100%; margin-top: 8px; }
+  .btn-danger { background: #B3261E; color: #fff; border: none; }
   .btn-ghost { background: transparent; color: #2F4A3C; border: 1px solid #2F4A3C; }
   .muted { font-size: 13px; color: #6B6459; margin: 14px 0; }
   .error { font-size: 13px; color: #B3261E; margin: 8px 0; }
   .success { font-size: 14px; color: #2F4A3C; margin: 14px 0; }
-  .age-block {
-    border: 1px solid #E4DFD3; border-radius: 12px; padding: 14px; margin-bottom: 14px;
+  .tabs { display: flex; gap: 6px; margin-bottom: 10px; }
+  .tab-btn {
+    flex: 1; padding: 8px; border: 1px solid #E4DFD3; background: #fff; color: #6B6459; border-radius: 8px; cursor: pointer;
   }
+  .tab-btn.active { background: #2F4A3C; color: #fff; border-color: #2F4A3C; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+  .drop-zone {
+    border: 2px dashed #E4DFD3; border-radius: 10px; padding: 24px; text-align: center;
+    color: #6B6459; font-size: 13px; cursor: pointer; margin-bottom: 10px;
+  }
+  .drop-zone.drag-over { border-color: #2F4A3C; background: #F5F2E9; }
+  .image-thumbs { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+  .image-thumbs img { width: 60px; height: 60px; object-fit: cover; border-radius: 6px; border: 1px solid #E4DFD3; }
+  .file-chip {
+    display: inline-flex; align-items: center; gap: 8px; background: #F5F2E9; border-radius: 8px;
+    padding: 6px 10px; font-size: 13px; margin-top: 8px;
+  }
+  .file-chip button { padding: 2px 8px; font-size: 12px; }
+  .age-block { border: 1px solid #E4DFD3; border-radius: 12px; padding: 14px; margin-bottom: 14px; }
   .age-tag {
     display: inline-block; font-size: 12px; font-weight: 600; background: #EFEAE0;
     color: #2F4A3C; padding: 3px 10px; border-radius: 6px; margin-bottom: 10px;
   }
-  .step-row {
-    display: flex; gap: 10px; align-items: flex-start; padding: 8px 0;
-    border-top: 1px solid #F0ECE2;
-  }
+  .step-row { display: flex; gap: 10px; align-items: flex-start; padding: 8px 0; border-top: 1px solid #F0ECE2; }
   .step-row:first-of-type { border-top: none; }
   .step-num { font-size: 13px; color: #9C9384; width: 20px; flex: none; padding-top: 6px; }
   .step-time { font-size: 12px; color: #9C9384; width: 90px; flex: none; padding-top: 6px; }
@@ -65,12 +80,16 @@
   .toggle-btn.active-adapted { background: #FCEFE2; border-color: #C9762E; color: #C9762E; }
   .replacement-input { display: none; }
   .replacement-input.show { display: block; }
-  .output-block {
-    border: 1px solid #E4DFD3; border-radius: 10px; padding: 12px; margin-bottom: 10px; background: #FBF9F5;
-  }
+  .output-block { border: 1px solid #E4DFD3; border-radius: 10px; padding: 12px; margin-bottom: 10px; background: #FBF9F5; }
   .output-block ul { margin: 6px 0 0; padding-left: 18px; font-size: 13px; }
   .output-block p { font-size: 13px; margin: 6px 0 0; }
   .copy-btn { font-size: 12px; margin-top: 8px; padding: 6px 10px; }
+  .lesson-list-item {
+    display: flex; justify-content: space-between; align-items: center;
+    border: 1px solid #E4DFD3; border-radius: 8px; padding: 8px 12px; margin-bottom: 6px; font-size: 13px;
+  }
+  .lesson-list-item button { padding: 4px 10px; font-size: 12px; }
+  .lesson-picker-item { border-bottom: 1px solid #F0ECE2; padding: 8px 0; font-size: 13px; }
   .hidden { display: none; }
 </style>
 </head>
@@ -80,34 +99,64 @@
   <h1>Curriculum parser</h1>
 
   <script>
-    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwXh728vhh56Md1gQSofPw__G2yK5a_TlX81lbiy2-rKs0EtFURJiyPQ0HlWnpW5mQ9kA/exec';
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwDTpZ4Cyx3w1A5XN-EdM8vMtcP45cm_vDzfhUvTLPIXyhs5TIpYTa0l3Fepy68OxVP_w/exec';
   </script>
 
   <label for="unit-select">Unit</label>
   <div class="row">
     <select id="unit-select">
-      <option value="">เลือก unit...</option>
+      <option value="">Select a unit...</option>
     </select>
-    <button class="btn-ghost" id="toggle-new-unit" style="flex: 0 0 auto;">+ Unit ใหม่</button>
+    <button class="btn-ghost" id="toggle-new-unit" style="flex: 0 0 auto;">+ New unit</button>
+  </div>
+  <div id="new-unit-row" class="row hidden">
+    <input id="new-unit-name" placeholder="Unit name, e.g. Earth & Ocean Science" />
+    <button class="btn-ghost" id="create-unit-btn" style="flex: 0 0 auto;">Create</button>
   </div>
 
-  <div id="new-unit-row" class="row hidden">
-    <input id="new-unit-name" placeholder="ชื่อ unit เช่น Earth & Ocean Science" />
-    <button class="btn-ghost" id="create-unit-btn" style="flex: 0 0 auto;">สร้าง</button>
-  </div>
+  <label>Saved lessons in this unit</label>
+  <div id="saved-lessons-list" class="muted">Select a unit to see saved lessons.</div>
 
   <p id="error-box" class="error hidden"></p>
 
-  <div id="stage-paste">
-    <label for="raw-text">วางเนื้อหา lesson plan ทั้งหมด</label>
-    <textarea id="raw-text" rows="10" placeholder="วางเนื้อหาที่คัดลอกมาจาก Word หรือ Google Doc ตรงนี้ ยิ่งใส่รายละเอียดกิจกรรม/เวลาครบเท่าไหร่ ผลลัพธ์ยิ่งละเอียดเท่านั้น"></textarea>
+  <!-- ===== INPUT STAGE ===== -->
+  <div id="stage-input">
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="paste">Paste text</button>
+      <button class="tab-btn" data-tab="file">Upload file</button>
+    </div>
+
+    <div id="tab-paste" class="tab-panel active">
+      <label for="raw-text">Paste the full lesson plan text</label>
+      <textarea id="raw-text" rows="9" placeholder="Paste content copied from Word or Google Docs here. The more detail on timing/activities, the better the result."></textarea>
+
+      <label>Optional: paste or drop extra images (diagrams, photos)</label>
+      <div class="drop-zone" id="image-drop-zone" tabindex="0">Click here then paste (Ctrl+V), or drag & drop images</div>
+      <div class="image-thumbs" id="image-thumbs"></div>
+    </div>
+
+    <div id="tab-file" class="tab-panel">
+      <label>Upload a lesson plan file (.docx, .pdf, or an image)</label>
+      <div class="drop-zone" id="file-drop-zone">Click to choose a file, or drag & drop it here</div>
+      <input type="file" id="file-input" accept=".docx,.pdf,image/*" style="display:none;" />
+      <div id="file-chip-container"></div>
+    </div>
+
     <button class="btn-primary" id="parse-btn">Parse with AI</button>
   </div>
 
-  <p id="stage-loading" class="muted hidden">กำลังจัดโครงสร้างข้อมูล...</p>
+  <p id="stage-loading" class="muted hidden">Structuring the content...</p>
 
+  <!-- ===== MULTI-LESSON PICKER ===== -->
+  <div id="stage-picker" class="hidden">
+    <p class="muted">Found multiple lessons in this input. Select one to review and save:</p>
+    <div id="picker-list"></div>
+    <button class="btn-ghost" id="picker-back-btn" style="margin-top: 10px;">Back</button>
+  </div>
+
+  <!-- ===== PREVIEW / EDIT STAGE ===== -->
   <div id="stage-preview" class="hidden">
-    <p class="muted">ตรวจสอบชื่อ session แล้วทำเครื่องหมายว่าแต่ละขั้นสอนตามแผนหรือปรับเปลี่ยน</p>
+    <p class="muted">Review the session, then mark each step as planned or adapted.</p>
 
     <label>Session title</label>
     <input id="p-title" />
@@ -118,30 +167,32 @@
     <div id="age-blocks-container"></div>
 
     <div class="row">
-      <button class="btn-ghost" id="start-over-btn">แก้ข้อความเดิม</button>
-      <button class="btn-ghost" id="save-curriculum-btn">บันทึกเข้าหลักสูตร</button>
+      <button class="btn-ghost" id="start-over-btn">Start over</button>
+      <button class="btn-ghost" id="save-curriculum-btn">Save to curriculum</button>
     </div>
-    <button class="btn-secondary" id="generate-btn">สร้าง Assessment + Parent Message</button>
+    <button class="btn-secondary" id="finish-btn">Mark finished & save log</button>
+    <button class="btn-secondary" id="generate-btn">Generate Assessment + Parent Message</button>
   </div>
 
-  <p id="stage-saving" class="muted hidden">กำลังบันทึก...</p>
-  <p id="save-confirm" class="success hidden">บันทึกเข้า Sessions และ SessionAgeVariants แล้ว</p>
+  <p id="save-confirm" class="success hidden">Saved to Sessions and SessionAgeVariants.</p>
+  <p id="finish-confirm" class="success hidden">Marked finished — logged to SessionLogs.</p>
 
-  <p id="stage-generating" class="muted hidden">กำลังสร้าง Assessment และ Parent Message จากสิ่งที่สอนจริง...</p>
+  <p id="stage-generating" class="muted hidden">Generating Assessment and Parent Message from what was actually taught...</p>
 
   <div id="stage-results" class="hidden">
     <h2>Assessment</h2>
     <div id="assessment-results"></div>
-
     <h2 style="margin-top: 18px;">Parent message</h2>
     <div id="parent-results"></div>
-
-    <button class="btn-primary" id="restart-btn">Parse session ถัดไป</button>
+    <button class="btn-primary" id="restart-btn">Parse next lesson</button>
   </div>
 </div>
 
 <script>
 let currentPreview = null;
+let pendingLessons = null;
+let pastedImages = [];
+let uploadedFile = null;
 
 async function callApi(action, payload) {
   const res = await fetch(APPS_SCRIPT_URL, {
@@ -158,34 +209,39 @@ function showError(msg) {
   box.textContent = msg;
   box.classList.remove('hidden');
 }
-function clearError() {
-  document.getElementById('error-box').classList.add('hidden');
-}
+function clearError() { document.getElementById('error-box').classList.add('hidden'); }
 
 function showStage(names) {
-  const all = ['paste', 'loading', 'preview', 'saving', 'generating', 'results'];
+  const all = ['input', 'loading', 'picker', 'preview', 'generating', 'results'];
   all.forEach((s) => {
     document.getElementById('stage-' + s).classList.toggle('hidden', names.indexOf(s) === -1);
   });
   if (names.indexOf('preview') === -1) {
     document.getElementById('save-confirm').classList.add('hidden');
+    document.getElementById('finish-confirm').classList.add('hidden');
   }
 }
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str || '';
+  return div.innerHTML;
+}
+
+// ---------- Units ----------
 
 async function loadUnits() {
   try {
     const units = await callApi('listUnits');
     const select = document.getElementById('unit-select');
-    select.innerHTML = '<option value="">เลือก unit...</option>';
+    select.innerHTML = '<option value="">Select a unit...</option>';
     units.forEach((u) => {
       const opt = document.createElement('option');
       opt.value = u.UnitID;
       opt.textContent = u.Name;
       select.appendChild(opt);
     });
-  } catch (e) {
-    showError(e.message);
-  }
+  } catch (e) { showError(e.message); }
 }
 
 document.getElementById('toggle-new-unit').addEventListener('click', () => {
@@ -202,38 +258,215 @@ document.getElementById('create-unit-btn').addEventListener('click', async () =>
     document.getElementById('unit-select').value = data.unitId;
     document.getElementById('new-unit-row').classList.add('hidden');
     document.getElementById('new-unit-name').value = '';
-  } catch (e) {
-    showError(e.message);
+    loadSavedLessons();
+  } catch (e) { showError(e.message); }
+});
+
+document.getElementById('unit-select').addEventListener('change', loadSavedLessons);
+
+// ---------- Saved lessons list (load / delete) ----------
+
+async function loadSavedLessons() {
+  const unitId = document.getElementById('unit-select').value;
+  const container = document.getElementById('saved-lessons-list');
+  if (!unitId) {
+    container.innerHTML = '<span class="muted">Select a unit to see saved lessons.</span>';
+    return;
+  }
+  container.innerHTML = '<span class="muted">Loading...</span>';
+  try {
+    const sessions = await callApi('listSessions', { unitId });
+    if (sessions.length === 0) {
+      container.innerHTML = '<span class="muted">No saved lessons yet in this unit.</span>';
+      return;
+    }
+    container.innerHTML = '';
+    sessions.forEach((s) => {
+      const div = document.createElement('div');
+      div.className = 'lesson-list-item';
+      div.innerHTML =
+        '<span>' + escapeHtml(s.title) + '</span>' +
+        '<span>' +
+          '<button class="btn-ghost" data-load="' + s.sessionId + '">Load</button> ' +
+          '<button class="btn-danger" data-delete="' + s.sessionId + '">Delete</button>' +
+        '</span>';
+      container.appendChild(div);
+    });
+    container.querySelectorAll('[data-load]').forEach((btn) => {
+      btn.addEventListener('click', () => loadSavedSession(btn.getAttribute('data-load')));
+    });
+    container.querySelectorAll('[data-delete]').forEach((btn) => {
+      btn.addEventListener('click', () => deleteSavedSession(btn.getAttribute('data-delete')));
+    });
+  } catch (e) { showError(e.message); }
+}
+
+async function loadSavedSession(sessionId) {
+  clearError();
+  try {
+    const data = await callApi('getSession', { sessionId });
+    currentPreview = data;
+    renderPreview();
+    showStage(['preview']);
+  } catch (e) { showError(e.message); }
+}
+
+async function deleteSavedSession(sessionId) {
+  if (!confirm('Delete this lesson? This cannot be undone.')) return;
+  clearError();
+  try {
+    await callApi('deleteSession', { sessionId });
+    loadSavedLessons();
+  } catch (e) { showError(e.message); }
+}
+
+// ---------- Tabs ----------
+
+document.querySelectorAll('.tab-btn').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach((b) => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach((p) => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.getAttribute('data-tab')).classList.add('active');
+  });
+});
+
+// ---------- Image paste/drop zone ----------
+
+function addPastedImage(mimeType, base64) {
+  pastedImages.push({ mimeType, data: base64 });
+  const img = document.createElement('img');
+  img.src = 'data:' + mimeType + ';base64,' + base64;
+  document.getElementById('image-thumbs').appendChild(img);
+}
+
+function readBlobAsBase64_(blob, cb) {
+  const reader = new FileReader();
+  reader.onload = () => cb(reader.result.split(',')[1]);
+  reader.readAsDataURL(blob);
+}
+
+const imageDropZone = document.getElementById('image-drop-zone');
+imageDropZone.addEventListener('paste', (e) => {
+  const items = e.clipboardData.items;
+  for (let i = 0; i < items.length; i++) {
+    if (items[i].type.indexOf('image/') === 0) {
+      const blob = items[i].getAsFile();
+      readBlobAsBase64_(blob, (b64) => addPastedImage(items[i].type, b64));
+    }
   }
 });
+imageDropZone.addEventListener('dragover', (e) => { e.preventDefault(); imageDropZone.classList.add('drag-over'); });
+imageDropZone.addEventListener('dragleave', () => imageDropZone.classList.remove('drag-over'));
+imageDropZone.addEventListener('drop', (e) => {
+  e.preventDefault();
+  imageDropZone.classList.remove('drag-over');
+  Array.from(e.dataTransfer.files).forEach((f) => {
+    if (f.type.indexOf('image/') === 0) readBlobAsBase64_(f, (b64) => addPastedImage(f.type, b64));
+  });
+});
+
+// ---------- File upload zone ----------
+
+const fileDropZone = document.getElementById('file-drop-zone');
+const fileInput = document.getElementById('file-input');
+fileDropZone.addEventListener('click', () => fileInput.click());
+fileDropZone.addEventListener('dragover', (e) => { e.preventDefault(); fileDropZone.classList.add('drag-over'); });
+fileDropZone.addEventListener('dragleave', () => fileDropZone.classList.remove('drag-over'));
+fileDropZone.addEventListener('drop', (e) => {
+  e.preventDefault();
+  fileDropZone.classList.remove('drag-over');
+  if (e.dataTransfer.files.length) handleFileSelected(e.dataTransfer.files[0]);
+});
+fileInput.addEventListener('change', () => {
+  if (fileInput.files.length) handleFileSelected(fileInput.files[0]);
+});
+
+function handleFileSelected(file) {
+  readBlobAsBase64_(file, (b64) => {
+    uploadedFile = { mimeType: file.type || guessMimeFromName_(file.name), data: b64, fileName: file.name };
+    const container = document.getElementById('file-chip-container');
+    container.innerHTML =
+      '<div class="file-chip"><span>' + escapeHtml(file.name) + '</span>' +
+      '<button class="btn-ghost" id="remove-file-btn">Remove</button></div>';
+    document.getElementById('remove-file-btn').addEventListener('click', () => {
+      uploadedFile = null;
+      container.innerHTML = '';
+    });
+  });
+}
+
+function guessMimeFromName_(name) {
+  if (name.endsWith('.docx')) return 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+  if (name.endsWith('.pdf')) return 'application/pdf';
+  return 'application/octet-stream';
+}
+
+// ---------- Parse ----------
 
 document.getElementById('parse-btn').addEventListener('click', async () => {
   clearError();
   const unitId = document.getElementById('unit-select').value;
+  if (!unitId) { showError('Select a unit before parsing.'); return; }
+
+  const activeTab = document.querySelector('.tab-btn.active').getAttribute('data-tab');
   const rawText = document.getElementById('raw-text').value.trim();
-  if (!unitId) { showError('เลือก unit ก่อนค่อย parse'); return; }
-  if (!rawText) { showError('วางเนื้อหา lesson plan ก่อนถึงจะ parse ได้'); return; }
+
+  if (activeTab === 'paste' && !rawText) { showError('Paste some lesson plan text first.'); return; }
+  if (activeTab === 'file' && !uploadedFile) { showError('Choose a file to upload first.'); return; }
 
   showStage(['loading']);
   try {
-    const data = await callApi('parseLessonPlan', { rawText });
-    data.ageVariants.forEach((v) => {
-      (v.activitySteps || []).forEach((s) => { s.status = 'followed'; s.replacement = ''; });
+    const payload = activeTab === 'file'
+      ? { uploadedFile }
+      : { text: rawText, pastedImages };
+    const data = await callApi('parseLessonPlan', payload);
+    data.lessons.forEach((lesson) => {
+      lesson.ageVariants.forEach((v) => {
+        (v.activitySteps || []).forEach((s) => { s.status = 'followed'; s.replacement = ''; });
+      });
     });
-    currentPreview = data;
-    renderPreview();
-    showStage(['preview']);
+
+    if (data.lessons.length === 1) {
+      currentPreview = data.lessons[0];
+      renderPreview();
+      showStage(['preview']);
+    } else {
+      pendingLessons = data.lessons;
+      renderPicker();
+      showStage(['picker']);
+    }
   } catch (e) {
     showError(e.message);
-    showStage(['paste']);
+    showStage(['input']);
   }
 });
 
-function escapeHtml(str) {
-  const div = document.createElement('div');
-  div.textContent = str || '';
-  return div.innerHTML;
+function renderPicker() {
+  const list = document.getElementById('picker-list');
+  list.innerHTML = '';
+  pendingLessons.forEach((lesson, i) => {
+    const div = document.createElement('div');
+    div.className = 'lesson-picker-item';
+    div.innerHTML =
+      '<strong>' + escapeHtml(lesson.sessionTitle || '(untitled)') + '</strong> &mdash; ' +
+      lesson.ageVariants.length + ' age group(s) ' +
+      '<button class="btn-ghost" style="float:right;" data-index="' + i + '">Review this lesson</button>';
+    list.appendChild(div);
+  });
+  list.querySelectorAll('[data-index]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-index'), 10);
+      currentPreview = pendingLessons[idx];
+      renderPreview();
+      showStage(['preview']);
+    });
+  });
 }
+
+document.getElementById('picker-back-btn').addEventListener('click', () => showStage(['input']));
+
+// ---------- Preview / step marking ----------
 
 function renderPreview() {
   document.getElementById('p-title').value = currentPreview.sessionTitle || '';
@@ -249,7 +482,7 @@ function renderAgeBlocks() {
     block.className = 'age-block';
     let html = '<span class="age-tag">' + escapeHtml(variant.ageGroup) + '</span>';
     if (!variant.activitySteps || variant.activitySteps.length === 0) {
-      html += '<p class="muted" style="margin:4px 0;">ไม่พบขั้นกิจกรรมแยกในต้นฉบับสำหรับกลุ่มนี้</p>';
+      html += '<p class="muted" style="margin:4px 0;">No individual steps found for this age group.</p>';
     }
     (variant.activitySteps || []).forEach((step, si) => {
       const followedActive = step.status === 'followed' ? 'active-followed' : '';
@@ -262,10 +495,10 @@ function renderAgeBlocks() {
           '<div class="step-main">' +
             '<div class="step-activity">' + escapeHtml(step.activity) + '</div>' +
             '<div class="toggle-group">' +
-              '<button type="button" class="toggle-btn ' + followedActive + '" data-vi="' + vi + '" data-si="' + si + '" data-status="followed">✓ ทำตามแผน</button>' +
-              '<button type="button" class="toggle-btn ' + adaptedActive + '" data-vi="' + vi + '" data-si="' + si + '" data-status="adapted">✗ ปรับเปลี่ยน</button>' +
+              '<button type="button" class="toggle-btn ' + followedActive + '" data-vi="' + vi + '" data-si="' + si + '" data-status="followed">As planned</button>' +
+              '<button type="button" class="toggle-btn ' + adaptedActive + '" data-vi="' + vi + '" data-si="' + si + '" data-status="adapted">Adapted</button>' +
             '</div>' +
-            '<input type="text" class="replacement-input ' + showReplacement + '" data-vi="' + vi + '" data-si="' + si + '" placeholder="สอนจริงทำอะไรแทน" value="' + escapeHtml(step.replacement) + '" />' +
+            '<input type="text" class="replacement-input ' + showReplacement + '" data-vi="' + vi + '" data-si="' + si + '" placeholder="What was actually taught instead" value="' + escapeHtml(step.replacement) + '" />' +
           '</div>' +
         '</div>';
     });
@@ -277,12 +510,10 @@ function renderAgeBlocks() {
     btn.addEventListener('click', (e) => {
       const vi = parseInt(e.target.getAttribute('data-vi'), 10);
       const si = parseInt(e.target.getAttribute('data-si'), 10);
-      const status = e.target.getAttribute('data-status');
-      currentPreview.ageVariants[vi].activitySteps[si].status = status;
+      currentPreview.ageVariants[vi].activitySteps[si].status = e.target.getAttribute('data-status');
       renderAgeBlocks();
     });
   });
-
   container.querySelectorAll('.replacement-input').forEach((input) => {
     input.addEventListener('input', (e) => {
       const vi = parseInt(e.target.getAttribute('data-vi'), 10);
@@ -297,21 +528,41 @@ document.getElementById('p-bigidea').addEventListener('input', (e) => { currentP
 
 document.getElementById('start-over-btn').addEventListener('click', () => {
   currentPreview = null;
+  pendingLessons = null;
+  pastedImages = [];
+  uploadedFile = null;
   document.getElementById('raw-text').value = '';
+  document.getElementById('image-thumbs').innerHTML = '';
+  document.getElementById('file-chip-container').innerHTML = '';
   clearError();
-  showStage(['paste']);
+  showStage(['input']);
 });
+
+// ---------- Save / Finish / Generate ----------
 
 document.getElementById('save-curriculum-btn').addEventListener('click', async () => {
   clearError();
   const unitId = document.getElementById('unit-select').value;
-  if (!currentPreview.sessionTitle.trim()) { showError('ใส่ชื่อ session ก่อนบันทึก'); return; }
+  if (!currentPreview.sessionTitle.trim()) { showError('Enter a session title before saving.'); return; }
   try {
-    await callApi('saveParsedSession', { unitId, parsed: currentPreview });
+    const data = await callApi('saveParsedSession', { unitId, parsed: currentPreview });
+    currentPreview.sessionId = data.sessionId;
     document.getElementById('save-confirm').classList.remove('hidden');
-  } catch (e) {
-    showError(e.message);
-  }
+    loadSavedLessons();
+  } catch (e) { showError(e.message); }
+});
+
+document.getElementById('finish-btn').addEventListener('click', async () => {
+  clearError();
+  const unitId = document.getElementById('unit-select').value;
+  try {
+    await callApi('markSessionFinished', {
+      sessionId: currentPreview.sessionId || '',
+      unitId,
+      sessionData: currentPreview
+    });
+    document.getElementById('finish-confirm').classList.remove('hidden');
+  } catch (e) { showError(e.message); }
 });
 
 document.getElementById('generate-btn').addEventListener('click', async () => {
@@ -348,23 +599,26 @@ function renderResults(data) {
     div.innerHTML =
       '<span class="age-tag">' + escapeHtml(pm.ageGroup) + '</span>' +
       '<p>' + escapeHtml(pm.message) + '</p>' +
-      '<button type="button" class="btn-ghost copy-btn" data-text="' + escapeHtml(pm.message) + '">คัดลอกข้อความ</button>';
+      '<button type="button" class="btn-ghost copy-btn" data-text="' + escapeHtml(pm.message) + '">Copy text</button>';
     pBox.appendChild(div);
   });
-
   pBox.querySelectorAll('.copy-btn').forEach((btn) => {
     btn.addEventListener('click', (e) => {
-      const text = e.target.getAttribute('data-text');
-      window.prompt('คัดลอกข้อความนี้ (Ctrl+A แล้ว Ctrl+C):', text);
+      window.prompt('Copy this text (Ctrl+A then Ctrl+C):', e.target.getAttribute('data-text'));
     });
   });
 }
 
 document.getElementById('restart-btn').addEventListener('click', () => {
   currentPreview = null;
+  pendingLessons = null;
+  pastedImages = [];
+  uploadedFile = null;
   document.getElementById('raw-text').value = '';
+  document.getElementById('image-thumbs').innerHTML = '';
+  document.getElementById('file-chip-container').innerHTML = '';
   clearError();
-  showStage(['paste']);
+  showStage(['input']);
 });
 
 loadUnits();
