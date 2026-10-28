@@ -8,37 +8,19 @@
   <style>
     body { margin: 0; font-family: ui-sans-serif, system-ui, sans-serif; background-color: rgb(250 250 249); color: rgb(41 37 36); min-height: 100vh; }
 
-    /* Nav bar — matches Little Beaver style */
     .nav { background: white; border-bottom: 1px solid rgb(231 229 228); padding: 0 1.5rem; display: flex; align-items: center; justify-content: space-between; height: 3.5rem; }
     .nav-logo { font-size: 0.875rem; font-weight: 600; letter-spacing: 0.025em; color: rgb(41 37 36); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; }
     .nav-logo span { color: rgb(120 113 108); font-weight: 400; }
-    .nav-back { font-size: 0.75rem; color: rgb(120 113 108); text-decoration: none; display: flex; align-items: center; gap: 0.25rem; transition: color 0.15s; }
+    .nav-back { font-size: 0.75rem; color: rgb(120 113 108); text-decoration: none; transition: color 0.15s; }
     .nav-back:hover { color: rgb(41 37 36); }
 
-    /* Page layout */
     .page { max-width: 56rem; margin: 0 auto; padding: 2rem 1.5rem 5rem; }
-    .page-header { margin-bottom: 2rem; }
-    .page-title { font-size: 1.125rem; font-weight: 600; color: rgb(41 37 36); margin-bottom: 0.25rem; }
-    .page-sub { font-size: 0.875rem; color: rgb(120 113 108); }
+    .page-title { font-size: 1.125rem; font-weight: 600; margin-bottom: 0.25rem; }
+    .page-sub { font-size: 0.875rem; color: rgb(120 113 108); margin-bottom: 2rem; }
 
-    /* Section label style */
     .section-label { font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: rgb(168 162 158); margin-bottom: 0.75rem; }
-
-    /* Card */
     .card { background: white; border: 1px solid rgb(231 229 228); border-radius: 0.75rem; padding: 1.25rem; margin-bottom: 1rem; }
 
-    /* Roster */
-    .roster-wrap { display: flex; flex-wrap: wrap; gap: 0.375rem; margin-bottom: 0.75rem; min-height: 2rem; }
-    .s-tag { display: inline-flex; align-items: center; gap: 0.25rem; background: rgb(245 245 244); border: 1px solid rgb(214 211 209); border-radius: 9999px; padding: 0.125rem 0.625rem 0.125rem 0.75rem; font-size: 0.75rem; color: rgb(68 64 60); font-weight: 500; }
-    .s-tag button { background: none; border: none; cursor: pointer; color: rgb(168 162 158); font-size: 1rem; line-height: 1; padding: 0; transition: color 0.15s; }
-    .s-tag button:hover { color: rgb(239 68 68); }
-
-    .pick-wrap { display: flex; flex-wrap: wrap; gap: 0.375rem; margin-bottom: 0; }
-    .pick-btn { background: rgb(250 250 249); border: 1px solid rgb(231 229 228); border-radius: 9999px; padding: 0.25rem 0.875rem; font-size: 0.75rem; font-family: inherit; color: rgb(87 83 78); cursor: pointer; transition: all 0.15s; font-weight: 500; }
-    .pick-btn:hover { border-color: rgb(168 162 158); color: rgb(41 37 36); }
-    .pick-btn.active { background: rgb(28 25 23); border-color: rgb(28 25 23); color: white; }
-
-    /* Inputs */
     input[type=text], input[type=date], select, textarea {
       width: 100%; border: 1px solid rgb(231 229 228); border-radius: 0.5rem;
       padding: 0.5rem 0.75rem; font-family: inherit; font-size: 0.875rem;
@@ -46,67 +28,55 @@
       transition: border-color 0.15s; box-sizing: border-box; -webkit-appearance: none;
     }
     input[type=text]:focus, input[type=date]:focus, select:focus, textarea:focus { border-color: rgb(168 162 158); }
-    textarea { resize: vertical; min-height: 96px; line-height: 1.625; }
+    textarea { resize: vertical; line-height: 1.625; }
     input::placeholder, textarea::placeholder { color: rgb(168 162 158); }
     label { display: block; font-size: 0.75rem; font-weight: 500; color: rgb(120 113 108); margin-bottom: 0.375rem; }
 
-    .row { display: flex; gap: 0.75rem; flex-wrap: wrap; }
-    .row .field { flex: 1; min-width: 150px; }
-    .field { margin-bottom: 0.75rem; }
-    .add-row { display: flex; gap: 0.5rem; align-items: flex-end; }
-    .add-row input { flex: 1; }
+    .row { display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: flex-end; }
+    .row .field { flex: 1; min-width: 140px; }
+    .field { margin-bottom: 0; }
 
-    /* Session rows */
-    .session-list { display: flex; flex-direction: column; gap: 0.75rem; }
-    .session-row { background: rgb(250 250 249); border: 1px solid rgb(231 229 228); border-radius: 0.5rem; padding: 1rem; }
-    .session-row-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.625rem; }
-    .session-name { font-size: 0.875rem; font-weight: 600; color: rgb(41 37 36); }
-    .session-row textarea { background: white; min-height: 80px; }
+    /* Paste area */
+    .paste-area { position: relative; }
+    .paste-textarea { min-height: 160px; font-size: 0.8125rem; font-family: ui-monospace, monospace; }
+    .paste-hint { font-size: 0.75rem; color: rgb(168 162 158); margin-top: 0.5rem; }
+
+    /* Preview table */
+    .preview-wrap { margin-top: 1rem; display: none; }
+    .preview-table { width: 100%; border-collapse: collapse; font-size: 0.8125rem; }
+    .preview-table th { text-align: left; font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: rgb(168 162 158); padding: 0 0.5rem 0.5rem; }
+    .preview-table td { padding: 0.5rem; border-top: 1px solid rgb(245 245 244); vertical-align: top; }
+    .preview-table td:first-child { font-weight: 600; white-space: nowrap; width: 120px; color: rgb(41 37 36); }
+    .preview-table td:last-child { color: rgb(87 83 78); line-height: 1.5; }
+    .preview-table tr:hover td { background: rgb(250 250 249); }
+    .badge { display: inline-block; background: rgb(245 245 244); border: 1px solid rgb(214 211 209); border-radius: 9999px; padding: 0.0625rem 0.5rem; font-size: 0.6875rem; font-weight: 600; color: rgb(120 113 108); margin-left: 0.5rem; }
 
     /* Buttons */
     .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.375rem; border-radius: 0.5rem; padding: 0.5rem 1rem; font-family: inherit; font-size: 0.875rem; font-weight: 500; cursor: pointer; transition: all 0.15s; border: 1px solid transparent; }
-    .btn-primary { background: rgb(28 25 23); color: white; width: 100%; padding: 0.625rem 1rem; }
+    .btn-primary { background: rgb(28 25 23); color: white; width: 100%; padding: 0.625rem 1rem; margin-top: 1rem; }
     .btn-primary:hover { background: rgb(41 37 36); }
     .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
     .btn-stone { background: white; color: rgb(87 83 78); border-color: rgb(231 229 228); }
     .btn-stone:hover { border-color: rgb(168 162 158); color: rgb(41 37 36); }
     .btn-sm { padding: 0.25rem 0.625rem; font-size: 0.75rem; border-radius: 0.375rem; }
-    .btn-danger { color: rgb(168 162 158); background: transparent; border-color: transparent; }
-    .btn-danger:hover { color: rgb(239 68 68); }
+
+    /* Lang */
+    .top-bar { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem; }
+    .lang-wrap { display: flex; align-items: center; gap: 0.5rem; padding-top: 0.125rem; }
+    .lang-wrap label { margin: 0; white-space: nowrap; }
+    .lang-wrap select { width: 140px; }
 
     /* Output */
     .output-block { border: 1px solid rgb(231 229 228); border-radius: 0.75rem; overflow: hidden; margin-bottom: 0.75rem; background: white; }
     .output-head { display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 1rem; border-bottom: 1px solid rgb(245 245 244); background: rgb(250 250 249); }
-    .output-student { font-size: 0.875rem; font-weight: 600; color: rgb(41 37 36); }
-    .output-body { padding: 1rem; font-size: 0.875rem; line-height: 1.625; color: rgb(41 37 36); white-space: pre-wrap; min-height: 60px; }
+    .output-student { font-size: 0.875rem; font-weight: 600; }
+    .output-body { padding: 1rem; font-size: 0.875rem; line-height: 1.75; color: rgb(41 37 36); white-space: pre-wrap; min-height: 60px; }
     .output-body.loading { color: rgb(168 162 158); font-style: italic; display: flex; align-items: center; gap: 0.5rem; }
     .output-body.error { color: rgb(239 68 68); }
 
-    /* Spinner */
     .spinner { width: 14px; height: 14px; border: 1.5px solid rgb(214 211 209); border-top-color: rgb(87 83 78); border-radius: 50%; animation: spin 0.75s linear infinite; flex-shrink: 0; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* Lang select */
-    .top-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem; }
-    .top-row-left { flex: 1; }
-    .lang-wrap { display: flex; align-items: center; gap: 0.5rem; white-space: nowrap; padding-top: 0.125rem; }
-    .lang-wrap label { margin: 0; }
-    .lang-wrap select { width: 140px; }
-
-    /* Hint */
-    .hint { font-size: 0.75rem; color: rgb(168 162 158); margin-top: 0.375rem; }
-
-    /* Copy toast */
-    .copied-toast { background: rgb(28 25 23); color: white; font-size: 0.75rem; }
-
-    /* Empty state */
-    .empty { font-size: 0.8125rem; color: rgb(168 162 158); padding: 0.25rem 0; }
-
-    /* Divider */
-    .divider { border: none; border-top: 1px solid rgb(231 229 228); margin: 1.5rem 0; }
-
-    #sessions-card { display: none; }
-    #generate-btn { display: none; }
     #output-section { display: none; margin-top: 1.5rem; }
     .output-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; }
     .output-top-title { font-size: 0.875rem; font-weight: 600; }
@@ -114,23 +84,17 @@
 </head>
 <body>
 
-<!-- Nav -->
 <nav class="nav">
-  <a class="nav-logo" href="index.html">
-    🦫 Little Beaver Lab <span>/ Math Report Builder</span>
-  </a>
-  <a class="nav-back" href="index.html">
-    ← Back to app
-  </a>
+  <a class="nav-logo" href="index.html">🦫 Little Beaver Lab <span>/ Math Report Builder</span></a>
+  <a class="nav-back" href="index.html">← Back to app</a>
 </nav>
 
 <div class="page">
 
-  <!-- Header + lang -->
-  <div class="top-row">
-    <div class="top-row-left">
+  <div class="top-bar">
+    <div>
       <div class="page-title">Math Report Builder</div>
-      <div class="page-sub">แปลงโน้ตครูให้เป็นรายงานมืออาชีพส่งผู้ปกครอง</div>
+      <div class="page-sub">Copy จาก spreadsheet วางทีเดียว — แอปแยกชื่อ+โน้ตให้อัตโนมัติ</div>
     </div>
     <div class="lang-wrap">
       <label>Language</label>
@@ -141,46 +105,44 @@
     </div>
   </div>
 
-  <!-- ROSTER CARD -->
+  <!-- STEP 1: Paste + Date -->
   <div class="card">
-    <div class="section-label">Student roster</div>
-    <div class="roster-wrap" id="roster-wrap">
-      <span class="empty" id="roster-empty">No students yet</span>
-    </div>
-    <div class="add-row">
-      <div style="flex:1">
-        <input type="text" id="new-name" placeholder="Type a student name and press +" maxlength="40" />
-      </div>
-      <button class="btn btn-stone btn-sm" style="height:2.25rem;white-space:nowrap" onclick="addStudent()">+ Add</button>
-    </div>
-    <p class="hint" id="db-hint"></p>
-  </div>
+    <div class="section-label">Step 1 — วาง copy จาก spreadsheet</div>
 
-  <!-- SESSION CARD -->
-  <div class="card">
-    <div class="section-label" style="margin-bottom:1rem">Session</div>
-    <div class="row">
-      <div class="field">
-        <label>Date</label>
-        <input type="date" id="session-date" />
+    <div class="paste-area">
+      <textarea class="paste-textarea" id="paste-input" placeholder="Copy จาก Google Sheets แล้ววางตรงนี้เลย
+
+ตัวอย่าง:
+Tertis	He did TIMO final past paper 2024...
+Esper	He did Lesson 5 which is regrouping...
+MinMin	She did Lesson 5 and could do them all..." oninput="parsePaste()"></textarea>
+    </div>
+    <p class="paste-hint">💡 แต่ละแถว: ชื่อ [Tab] โน้ต — copy จาก spreadsheet ได้เลย รองรับ Tab หรือหลาย space</p>
+
+    <!-- Preview -->
+    <div class="preview-wrap" id="preview-wrap">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.5rem">
+        <div class="section-label" style="margin:0">พบ <span id="preview-count">0</span> คน</div>
+        <button class="btn btn-stone btn-sm" onclick="clearAll()">ล้างทั้งหมด</button>
       </div>
-      <div class="field" style="flex:2">
-        <div style="font-size:0.75rem;font-weight:500;color:rgb(120 113 108);margin-bottom:0.375rem">Select students for this session</div>
-        <div class="pick-wrap" id="pick-wrap">
-          <span class="empty">Add students above first</span>
-        </div>
-      </div>
+      <table class="preview-table">
+        <thead><tr><th>ชื่อ</th><th>โน้ตของครู</th></tr></thead>
+        <tbody id="preview-body"></tbody>
+      </table>
     </div>
   </div>
 
-  <!-- NOTES CARD (shown when students selected) -->
-  <div class="card" id="sessions-card">
-    <div class="section-label">Teacher's notes — one per student</div>
-    <div class="session-list" id="session-list"></div>
+  <!-- STEP 2: Date -->
+  <div class="card">
+    <div class="section-label">Step 2 — วันที่</div>
+    <div style="max-width:200px">
+      <label>Date</label>
+      <input type="date" id="session-date" />
+    </div>
   </div>
 
   <!-- GENERATE -->
-  <button class="btn btn-primary" id="generate-btn" onclick="generateAll()">
+  <button class="btn btn-primary" id="generate-btn" onclick="generateAll()" disabled>
     Generate parent reports
   </button>
 
@@ -193,124 +155,82 @@
     <div id="output-list"></div>
   </div>
 
-</div><!-- /page -->
+</div>
 
 <script>
-// ── State ──────────────────────────────────────────────────────────
-let db = null, sample = null;
-let roster = [];    // [{id, name}]
-let selected = [];  // [name]
+let students = []; // [{name, notes}]
 
-// ── Init ───────────────────────────────────────────────────────────
-(async () => {
-  const today = new Date().toISOString().split('T')[0];
-  document.getElementById('session-date').value = today;
-  document.getElementById('new-name').addEventListener('keydown', e => { if (e.key === 'Enter') addStudent(); });
+// Set today
+document.getElementById('session-date').value = new Date().toISOString().split('T')[0];
 
-  if (typeof claude !== 'undefined') {
-    db     = await claude.use('db');
-    sample = await claude.use('sample');
+// ── Parse paste ────────────────────────────────────────────────────
+function parsePaste() {
+  const raw = document.getElementById('paste-input').value;
+  const lines = raw.split('\n').map(l => l.trim()).filter(l => l);
+
+  students = [];
+  for (const line of lines) {
+    // Split on first tab or 2+ spaces
+    const match = line.match(/^(.+?)(?:\t|  +)(.+)$/);
+    if (match) {
+      const name  = match[1].trim();
+      const notes = match[2].trim();
+      if (name && notes) {
+        // If same name appears again, append notes
+        const existing = students.find(s => s.name.toLowerCase() === name.toLowerCase());
+        if (existing) {
+          existing.notes += ' ' + notes;
+        } else {
+          students.push({ name, notes });
+        }
+      }
+    }
   }
 
-  if (db) {
-    db.collection('students').orderBy('createdAt').onSnapshot(snap => {
-      roster = snap.docs.map(d => ({ id: d.id, name: d.data().name }));
-      renderRoster();
-    });
-    document.getElementById('db-hint').textContent = 'Roster saved automatically';
-  } else {
-    document.getElementById('db-hint').textContent = 'Running offline — roster resets on close';
-    renderRoster();
-  }
-})();
-
-// ── Roster ─────────────────────────────────────────────────────────
-async function addStudent() {
-  const inp = document.getElementById('new-name');
-  const name = inp.value.trim();
-  if (!name || roster.some(s => s.name.toLowerCase() === name.toLowerCase())) { inp.value = ''; return; }
-  if (db) {
-    await db.collection('students').add({ name, createdAt: Date.now() });
-  } else {
-    roster.push({ id: Date.now().toString(), name });
-    renderRoster();
-  }
-  inp.value = '';
+  renderPreview();
 }
 
-async function removeStudent(id) {
-  if (db) { await db.collection('students').doc(id).delete(); }
-  else { roster = roster.filter(s => s.id !== id); renderRoster(); }
-  selected = selected.filter(n => roster.some(s => s.name === n));
-  renderSessions();
-}
+function renderPreview() {
+  const wrap  = document.getElementById('preview-wrap');
+  const tbody = document.getElementById('preview-body');
+  const count = document.getElementById('preview-count');
+  const btn   = document.getElementById('generate-btn');
 
-function renderRoster() {
-  const wrap = document.getElementById('roster-wrap');
-  const empty = document.getElementById('roster-empty');
-  if (roster.length === 0) {
-    wrap.innerHTML = ''; wrap.appendChild(empty); empty.style.display = '';
-    document.getElementById('pick-wrap').innerHTML = '<span class="empty">Add students above first</span>';
+  if (students.length === 0) {
+    wrap.style.display = 'none';
+    btn.disabled = true;
     return;
   }
-  empty.style.display = 'none';
-  wrap.innerHTML = roster.map(s => `
-    <span class="s-tag">
-      ${esc(s.name)}
-      <button onclick="removeStudent('${s.id}')" title="Remove">×</button>
-    </span>`).join('');
 
-  document.getElementById('pick-wrap').innerHTML = roster.map(s => {
-    const on = selected.includes(s.name);
-    return `<button class="pick-btn${on?' active':''}" onclick="toggleSelect('${esc(s.name)}')">${on ? '✓ ' : ''}${esc(s.name)}</button>`;
-  }).join('');
+  wrap.style.display = 'block';
+  count.textContent  = students.length;
+  btn.disabled       = false;
+
+  tbody.innerHTML = students.map(s => `
+    <tr>
+      <td>${esc(s.name)}</td>
+      <td>${esc(s.notes)}</td>
+    </tr>`).join('');
 }
 
-function toggleSelect(name) {
-  selected = selected.includes(name) ? selected.filter(n => n !== name) : [...selected, name];
-  renderRoster();
-  renderSessions();
-}
-
-// ── Session notes ───────────────────────────────────────────────────
-function renderSessions() {
-  const card = document.getElementById('sessions-card');
-  const list = document.getElementById('session-list');
-  const btn  = document.getElementById('generate-btn');
-
-  if (selected.length === 0) { card.style.display = 'none'; btn.style.display = 'none'; return; }
-  card.style.display = 'block'; btn.style.display = 'flex';
-
-  const saved = {};
-  list.querySelectorAll('.session-row').forEach(r => { saved[r.dataset.name] = r.querySelector('textarea').value; });
-
-  list.innerHTML = selected.map(name => `
-    <div class="session-row" data-name="${esc(name)}">
-      <div class="session-row-top">
-        <span class="session-name">${esc(name)}</span>
-        <button class="btn btn-danger btn-sm" onclick="toggleSelect('${esc(name)}')">Remove</button>
-      </div>
-      <textarea id="notes-${esc(name)}" placeholder="Notes for ${esc(name)} today…">${esc(saved[name]||'')}</textarea>
-    </div>`).join('');
+function clearAll() {
+  document.getElementById('paste-input').value = '';
+  students = [];
+  renderPreview();
+  document.getElementById('output-section').style.display = 'none';
 }
 
 // ── Generate ────────────────────────────────────────────────────────
 async function generateAll() {
+  if (!students.length) return;
+
   const lang    = document.getElementById('lang').value;
   const dateVal = document.getElementById('session-date').value;
-  const dateStr = dateVal ? new Date(dateVal+'T00:00:00').toLocaleDateString('th-TH',{day:'numeric',month:'long',year:'numeric'}) : '';
-
-  const students = selected.map(name => ({
-    name, notes: (document.getElementById('notes-'+name)||{}).value?.trim()||''
-  })).filter(s => s.notes);
-
-  if (!students.length) { alert('Please add notes for at least one student.'); return; }
-
-  // Use Anthropic API directly if running standalone (no sample capability)
-  const useDirectAPI = !sample;
+  const dateStr = dateVal ? new Date(dateVal + 'T00:00:00').toLocaleDateString('th-TH', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
 
   const btn = document.getElementById('generate-btn');
-  btn.disabled = true; btn.innerHTML = '<div class="spinner"></div> Generating…';
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner"></div> Generating…';
 
   const outSection = document.getElementById('output-section');
   const outList    = document.getElementById('output-list');
@@ -326,7 +246,7 @@ async function generateAll() {
       <div class="output-body loading" id="body-${esc(s.name)}"><div class="spinner"></div> Writing…</div>
     </div>`).join('');
 
-  await Promise.all(students.map(s => useDirectAPI ? genDirect(s.name, s.notes, lang, dateStr) : genSample(s.name, s.notes, lang, dateStr)));
+  await Promise.all(students.map(s => genDirect(s.name, s.notes, lang, dateStr)));
 
   btn.disabled = false;
   btn.innerHTML = 'Generate parent reports';
@@ -343,33 +263,15 @@ Use exactly these 3 sections with emoji headers:
 💡 Next Steps & Support — explain how the next session will help them improve. Use 1–2 bullet points.
 
 Rules:
-- Use the student's name "${name}" throughout (not generic pronouns alone)
+- Use the student's name "${name}" throughout
 - Keep it warm, specific, and encouraging
 - Start with "Math Report — ${name}" then the date on the next line
 ${dateStr ? `- Date: ${dateStr}` : ''}
-- If language is Thai, write the ENTIRE report in Thai including all headers and labels
+- If language is Thai, write the ENTIRE report in Thai including all headers
 - No preamble — start directly with "Math Report — ${name}"
 
 Teacher's notes:
 ${notes}`;
-}
-
-async function genSample(name, notes, lang, dateStr) {
-  const bodyEl  = document.getElementById(`body-${name}`);
-  const copyBtn = document.getElementById(`copy-${name}`);
-  try {
-    let full = '';
-    await sample(buildPrompt(name, notes, lang, dateStr), {
-      modelTier: 'default', cache: false,
-      onText({ text }) { full = text; bodyEl.className = 'output-body'; bodyEl.textContent = text; }
-    });
-    bodyEl.className = 'output-body';
-    bodyEl.textContent = full || 'No output received — please try again.';
-    copyBtn.style.display = 'inline-flex';
-  } catch(err) {
-    bodyEl.className = 'output-body error';
-    bodyEl.textContent = err.code === 'not_granted' ? 'Please allow AI access and try again.' : `Error: ${err.message}`;
-  }
 }
 
 async function genDirect(name, notes, lang, dateStr) {
@@ -387,10 +289,12 @@ async function genDirect(name, notes, lang, dateStr) {
     });
     const data = await res.json();
     const text = data.content?.find(b => b.type === 'text')?.text || 'Something went wrong.';
-    bodyEl.className = 'output-body'; bodyEl.textContent = text;
+    bodyEl.className = 'output-body';
+    bodyEl.textContent = text;
     copyBtn.style.display = 'inline-flex';
   } catch(err) {
-    bodyEl.className = 'output-body error'; bodyEl.textContent = 'Connection error — please try again.';
+    bodyEl.className = 'output-body error';
+    bodyEl.textContent = 'Connection error — please try again.';
   }
 }
 
@@ -401,7 +305,7 @@ function copyOne(name) {
 }
 function copyAll() {
   const blocks = [...document.querySelectorAll('.output-body:not(.loading):not(.error)')].map(b => b.textContent);
-  navigator.clipboard.writeText(blocks.join('\n\n───────────────────\n\n')).then(() => {
+  navigator.clipboard.writeText(blocks.join('\n\n' + '─'.repeat(40) + '\n\n')).then(() => {
     const btn = document.querySelector('[onclick="copyAll()"]');
     const orig = btn.textContent; btn.textContent = 'Copied!';
     setTimeout(() => btn.textContent = orig, 2000);
@@ -409,11 +313,8 @@ function copyAll() {
 }
 function flash(id, on, off) {
   const b = document.getElementById(id); if (!b) return;
-  const orig = b.textContent; b.textContent = on;
-  setTimeout(() => b.textContent = off || orig, 2000);
+  b.textContent = on; setTimeout(() => b.textContent = off, 2000);
 }
-
-// ── Helpers ─────────────────────────────────────────────────────────
 function esc(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }
