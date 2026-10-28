@@ -277,24 +277,27 @@ ${notes}`;
 async function genDirect(name, notes, lang, dateStr) {
   const bodyEl  = document.getElementById(`body-${name}`);
   const copyBtn = document.getElementById(`copy-${name}`);
+
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw6Cl0exL-F1oo5wTSpS3ZmSVSrKuJ5YNw5Hf8eb_2TIrglRnn60OhFhAz4uFxGcMPgSQ/exec';
+
   try {
-    const res  = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 1000,
-        messages: [{ role: 'user', content: buildPrompt(name, notes, lang, dateStr) }]
-      })
-    });
+    const url = SCRIPT_URL
+      + '?name='  + encodeURIComponent(name)
+      + '&notes=' + encodeURIComponent(notes)
+      + '&lang='  + encodeURIComponent(lang)
+      + '&date='  + encodeURIComponent(dateStr);
+
+    const res  = await fetch(url);
     const data = await res.json();
-    const text = data.content?.find(b => b.type === 'text')?.text || 'Something went wrong.';
-    bodyEl.className = 'output-body';
-    bodyEl.textContent = text;
+
+    if (!data.ok) throw new Error(data.error || 'Script error');
+
+    bodyEl.className   = 'output-body';
+    bodyEl.textContent = data.text;
     copyBtn.style.display = 'inline-flex';
   } catch(err) {
-    bodyEl.className = 'output-body error';
-    bodyEl.textContent = 'Connection error — please try again.';
+    bodyEl.className   = 'output-body error';
+    bodyEl.textContent = 'Error: ' + err.message;
   }
 }
 
