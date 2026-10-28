@@ -337,19 +337,18 @@ function buildPrompt(name, notes, lang, dateStr) {
 
 Transform the teacher's raw notes into a polished parent report. Parents don't know lesson numbers or curriculum jargon — explain what math topic was actually covered in plain terms.
 
-Use exactly these 4 sections with emoji headers:
-📚 What We Worked On Today — explain the math skill in simple language (never mention lesson numbers)
-✅ What ${name} Did Well — celebrate specific strengths, be warm
-🎯 Area to Keep Practicing — honest but encouraging about what needs more work
-🚀 What's Next — how next session will help them grow
+Use exactly these 3 sections with emoji headers:
+🔢 Topic & Learning Focus — explain the math skill in simple language (never mention lesson numbers). Use 1–2 bullet points.
+📖 Progress & Performance — cover both what the student did well AND what still needs practice, in the same section. Be warm and specific. Use 2–4 bullet points.
+💡 Next Steps & Support — explain how the next session will help them improve. Use 1–2 bullet points.
 
 Rules:
 - Use the student's name "${name}" throughout (not generic pronouns alone)
-- 2–4 bullet points per section max
 - Keep it warm, specific, and encouraging
-${dateStr ? `- Include date: ${dateStr}` : ''}
+- Start with "Math Report — ${name}" then the date on the next line
+${dateStr ? `- Date: ${dateStr}` : ''}
 - If language is Thai, write the ENTIRE report in Thai including all headers and labels
-- Start directly with "Math Report — ${name}" (no preamble)
+- No preamble — start directly with "Math Report — ${name}"
 
 Teacher's notes:
 ${notes}`;
