@@ -170,13 +170,12 @@ function parsePaste() {
 
   students = [];
   for (const line of lines) {
-    // Split on first tab or 2+ spaces
-    const match = line.match(/^(.+?)(?:\t|  +)(.+)$/);
+    // Support: Tab-separated, "Name: notes", or "Name	notes"
+    const match = line.match(/^([A-Za-zก-๙\w]+(?:\s[A-Za-zก-๙\w]+)?)(?:\t|:\s*|  +)(.+)$/);
     if (match) {
       const name  = match[1].trim();
       const notes = match[2].trim();
       if (name && notes) {
-        // If same name appears again, append notes
         const existing = students.find(s => s.name.toLowerCase() === name.toLowerCase());
         if (existing) {
           existing.notes += ' ' + notes;
